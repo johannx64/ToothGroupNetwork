@@ -1,0 +1,15 @@
+contrast:
+  stage: Ua
+  contrast: softnn
+  ftype: latent
+  sample: label
+  pos: cnt
+  dist: l2
+  temperature: 1
+  weight: w.1
+
+
+multi:
+  stage: Ua
+  ftype: latent
+  combine: concat

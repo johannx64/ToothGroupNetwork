@@ -1,0 +1,46 @@
+docker pull pytorch/pytorch:1.7.1-cuda11.0-cudnn8-devel
+
+docker run --gpus all -it --name pointops_env pytorch/pytorch:1.7.1-cuda11.0-cudnn8-devel bash
+pip install wandb
+pip install --ignore-installed PyYAML
+pip install open3d
+pip install multimethod
+pip install termcolor
+pip install trimesh
+pip install easydict
+
+apt update
+apt install git
+
+cd external_libs/pointops
+python setup.py install
+⚡ ~ docker cp '3D_scans_per_patient_obj_files.zip' 47960368a6f8:/workspace
+Successfully copied 2.38GB to 47960368a6f8:/workspace
+⚡ ~ docker cp '3D_scans_per_patient_obj_files.zip' 47960368a6f8:/workspace/ToothGroupNetwork
+Successfully copied 2.38GB to 47960368a6f8:/workspace/ToothGroupNetwork
+⚡ ~ docker cp 'ckpts(new).zip' 47960368a6f8:/workspace/ToothGroupNetwork
+Successfully copied 157MB to 47960368a6f8:/workspace/ToothGroupNetwork
+⚡ ~ docker cp 'base_name_test_fold.txt' 47960368a6f8:/workspace/ToothGroupNetwork 
+Successfully copied 2.56kB to 47960368a6f8:/workspace/ToothGroupNetwork
+
+python start_inference.py \
+  --input_dir_path ./ \
+  --split_txt_path ./base_name_test_fold.txt \
+  --save_path ./results \
+  --model_name tgnet_fps \
+  --checkpoint_path ./ckpts_new/tgnet_fps.h5
+
+python start_inference.py \
+ --input_dir_path obj/file/parent/path \
+ --split_txt_path base_name_test_fold.txt \
+ --save_path path/to/save/results \
+ --model_name tgnet_fps \
+ --checkpoint_path your/tgnet_fps/checkpoint/path
+ --checkpoint_path_bdl your/tgnet_bdl/checkpoint/path
+
+ mkdir ckpts_new && unzip 'ckpts(new).zip' -d ckpts^C
+ root@47960368a6f8:/workspace/ToothGroupNetwork# python eval_visualize_results.py   --mesh_path ./013FHA7K/013FHA7K_lower.obj   --
+gt_json_path ./ground_instances/013FHA7K/013FHA7K_lower.json   --pred_json_path ./results/013FHA7K_lower.json
+
+unzip 'ground_instances.zip' -d ./ToothGroupNetwork/ground_instances
+unzip '3D_scans_per_patient_obj_files.zip' -d ./ToothGroupNetwork/3d_models
