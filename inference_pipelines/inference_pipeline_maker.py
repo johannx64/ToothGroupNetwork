@@ -103,4 +103,4 @@ def make_inference_pipeline(model_name, ckpt_path_ls):
         module.cuda()
         return InferencePipeLine(module)
     else:
-        raise "undefined model"
+        raise ValueError(f"Model {model_name} is undefined")
