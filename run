@@ -1,3 +1,6 @@
+docker build -t tooth_3d_env .
+docker run --gpus all -it --name tooth_3d_env tooth_3d_env
+
 docker pull pytorch/pytorch:1.7.1-cuda11.0-cudnn8-devel
 
 docker run --gpus all -it --name pointops_env pytorch/pytorch:1.7.1-cuda11.0-cudnn8-devel bash
